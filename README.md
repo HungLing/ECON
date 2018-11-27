@@ -1,12 +1,11 @@
-# ECON
 # Instructions on Econometrics Research
 
 # A person only needs to save the 8 excel files, change the working directory to where you save them, and then open the 2 do files.
 # One can get the process and the result on STATA following the instructions in this readme file.
 
 # Import & Clean do files
-/*Import and Clean do file*/
-/*Set up dataset*/
+# /*Import and Clean do file*/
+# /*Set up dataset*/
 
 # Must firstly set up working directory into where the excel files (data) are stored
 pwd
@@ -34,7 +33,7 @@ use y_x1x2x3, clear
 browse
 
 
-/*Set up dataset 69*/
+# /*Set up dataset 69*/
 # Must firstly set up working directory into where the excel files (data) are stored
 pwd
 cd "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project"
@@ -62,14 +61,14 @@ save "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\y_x1x2x3_69.dta"
 use y_x1x2x3_69, clear
 br
 
-/*Combine 69 with previously set dataset*/
+# /*Combine 69 with previously set dataset*/
 append using "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\y_x1x2x3.dta"
 br
 save "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\y_x1x2x3_whole.dta"
 
 # Result do file
-/*Results do file*/
-/*RESET*/
+# /*Results do file*/
+# /*RESET*/
 use y_x1x2x3_whole
 reg GDP_GrowthRate WorkHours Salary LaborParticipationRate
 predict yhat, xb
@@ -86,15 +85,15 @@ gen yhat3= yhat^3
 reg GDP_GrowthRate WorkHours Salary LaborParticipationRate WorkHours2 yhat2 yhat3
 test yhat2 yhat3
 
-/*Check Heteroskedasticity - Breusch Pagan*/
+# /*Check Heteroskedasticity - Breusch Pagan*/
 drop yhat yhat2 yhat3
 reg GDP_GrowthRate WorkHours Salary LaborParticipationRate WorkHours2
 predict r, resid
 gen r2= r^2
 reg r2 GDP_GrowthRate WorkHours Salary LaborParticipationRate WorkHours2
-/*Is Homoskedasticity*/
+# /*Is Homoskedasticity*/
 
-/*Check Weakly Dependent Time Series - Cochrone Orcutt Prais-Winsten Estimation*/
+# /*Check Weakly Dependent Time Series - Cochrone Orcutt Prais-Winsten Estimation*/
 drop r r2
 tsset year, year
 reg GDP_GrowthRate WorkHours Salary LaborParticipationRate WorkHours2
@@ -120,63 +119,67 @@ gen N2_WorkHours2 = N1_WorkHours2 - (-.0343669)*l.N1_WorkHours2
 reg N2_GDP_GrowthRate N2_WorkHours N2_Salary N2_LaborParticipationRate N2_WorkHours2
 predict N2_uhat, resid
 reg N2_uhat l.N2_uhat
-/*Since the rho generated from N2_uhat regression is 0.003, which is close to 0, I stopped*/
-/*Use:reg N2_GDP_GrowthRate N2_WorkHours N2_Salary N2_LaborParticipationRate N2_WorkHours2*/
+# /*Since the rho generated from N2_uhat regression is 0.003, which is close to 0, I stopped*/
+# /*Use:reg N2_GDP_GrowthRate N2_WorkHours N2_Salary N2_LaborParticipationRate N2_WorkHours2*/
 
 
-/*Test for Highly Persistent Series - Dicky Fuller Test*/
+# /*Test for Highly Persistent Series - Dicky Fuller Test*/
 drop uhat N1_uhat N2_uhat
 line N2_GDP_GrowthRate year /*Check if there is drift*/
 tsset year, year
-/* Is N2_GDP_GrowthRate Highly Persistent? */
+# /* Is N2_GDP_GrowthRate Highly Persistent? */
 reg d.N2_GDP_GrowthRate l.N2_GDP_GrowthRate
-dfuller N2_GDP_GrowthRate /*MacKinnon approximate p-value for Z(t) = 0.0066*/
-/*N2_GDP_GrowthRate is not Highly Persistent*/
+dfuller N2_GDP_GrowthRate 
+# /*MacKinnon approximate p-value for Z(t) = 0.0066*/
+# /*N2_GDP_GrowthRate is not Highly Persistent*/
 
-/*Is N2_WH HP? */
+# /*Is N2_WH HP? */
 reg d.N2_GDP_GrowthRate l.N2_GDP_GrowthRate
 dfuller N2_WorkHours
-/* MacKinnon approximate p-value for Z(t) = 0.8925*/
-/*N2_WH IS HP*/
+# /* MacKinnon approximate p-value for Z(t) = 0.8925*/
+# /*N2_WH IS HP*/
 
-/*Is N2_Salary HP? */
+# /*Is N2_Salary HP? */
 reg d.N2_Salary l.N2_Salary
-dfuller N2_Salary /*MacKinnon approximate p-value for Z(t) = 0.0391*/
-/*N2_Salary is not Highly Persistent*/
+dfuller N2_Salary 
+# /*MacKinnon approximate p-value for Z(t) = 0.0391*/
+# /*N2_Salary is not Highly Persistent*/
 
-/*Check if N2_LPR is HP? */
+# /*Check if N2_LPR is HP? */
 reg d.N2_LaborParticipationRate l.N2_LaborParticipationRate
-dfuller N2_LaborParticipationRate /*MacKinnon approximate p-value for Z(t) = 0.5983*/
-/*N2_LPR IS HP*/
+dfuller N2_LaborParticipationRate 
+# /*MacKinnon approximate p-value for Z(t) = 0.5983*/
+# /*N2_LPR IS HP*/
 
-/*Is WH2 HP? */
+# /*Is WH2 HP? */
 reg d.N2_WorkHours2 l.N2_WorkHours2
-dfuller N2_WorkHours2 /*MacKinnon approximate p-value for Z(t) = 0.8535*/
-/*N2_WH2 IS HP*/
+dfuller N2_WorkHours2
+# /*MacKinnon approximate p-value for Z(t) = 0.8535*/
+# /*N2_WH2 IS HP*/
 
 
-/*Finite Distributed Lag Model - LRP*/
-/*N2_GDP_GR on N2_WH - LRP*/
+# /*Finite Distributed Lag Model - LRP*/
+# /*N2_GDP_GR on N2_WH - LRP*/
 reg d.N2_GDP_GrowthRate d.N2_WorkHours l.d.N2_WorkHours l2.d.N2_WorkHours l3.d.N2_WorkHours
-/*N2_GDP_GR on N2_WH - LRP - Sum(D+LD)=LRP, only last year counts*/
+# /*N2_GDP_GR on N2_WH - LRP - Sum(D+LD)=LRP, only last year counts*/
 
-/*N2_Salary - LRP*/
+# /*N2_Salary - LRP*/
 reg d.N2_GDP_GrowthRate d.N2_Salary l.d.N2_Salary l2.d.N2_Salary l3.d.N2_Salary
-/*LRP = Sum(D+L1+L2)*/
+# /*LRP = Sum(D+L1+L2)*/
 
-/*N2_LPR*/
+# /*N2_LPR*/
 reg d.N2_GDP_GrowthRate d.N2_LaborParticipationRate l.d.N2_LaborParticipationRate l2.d.N2_LaborParticipationRate l3.d.N2_LaborParticipationRate
-/*LRP = Sum(D+L1)*/
+# /*LRP = Sum(D+L1)*/
 
-/*N2_WH2*/
+# /*N2_WH2*/
 reg d.N2_GDP_GrowthRate d.N2_WorkHours2 l.d.N2_WorkHours2 l2.d.N2_WorkHours2 l3.d.N2_WorkHours2
-/*LRP = Sum(D+L1)*/
+# /*LRP = Sum(D+L1)*/
 
-/*Result of the Regressions - for Conclusion*/
-/*The Regression Model for Conclusion*/
+# /*Result of the Regressions - for Conclusion*/
+# /*The Regression Model for Conclusion*/
 reg d.N2_GDP_GrowthRate d.N2_WorkHours l.d.N2_WorkHours d.N2_Salary l.d.N2_Salary l2.d.N2_Salary d.N2_LaborParticipationRate l.d.N2_LaborParticipationRate d.N2_WorkHours2 l.d.N2_WorkHours2
 
 
-/*F test for significance - whether to include in the final regression model*/
+# /*F test for significance - whether to include in the final regression model*/
 test d.N2_WorkHours l.d.N2_WorkHours d.N2_Salary l.d.N2_Salary l2.d.N2_Salary d.N2_LaborParticipationRate l.d.N2_LaborParticipationRate d.N2_WorkHours2 l.d.N2_WorkHours2
 
