@@ -9,26 +9,27 @@
 
 # Must firstly set up working directory into where the excel files (data) are stored
 pwd
-cd "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project"
+cd "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\Chen_Research"
 # Below codes create the .dta files for each of the excel files
 local filelist x1 x2 x3 y
 foreach i of local filelist{
 clear 
-import excel using "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project/`i'.xlsx", firstrow
+# import excel using ... the path needs to be changed into where you save the excel files
+import excel using "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\Chen_Research/`i'.xlsx", firstrow
 save "`i'.dta"
 }
 use y, clear
-merge 1:m year using "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\x1.dta"
+merge 1:m year using "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\Chen_Research\x1.dta"
 drop _merge
-save "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\y_x1.dta"
+save "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\Chen_Research\y_x1.dta"
 use y_x1, clear
-merge 1:1 year using "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\x2.dta"
+merge 1:1 year using "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\Chen_Research\x2.dta"
 drop _merge
-save "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\y_x1x2.dta"
+save "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\Chen_Research\y_x1x2.dta"
 use y_x1x2, clear
-merge 1:1 year using "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\x3.dta"
+merge 1:1 year using "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\Chen_Research\x3.dta"
 drop C D E F G H I _merge
-save "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\y_x1x2x3.dta"
+save "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\Chen_Research\y_x1x2x3.dta"
 use y_x1x2x3, clear
 browse
 
@@ -36,35 +37,37 @@ browse
 # /*Set up dataset 69*/
 # Must firstly set up working directory into where the excel files (data) are stored
 pwd
-cd "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project"
+cd "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\Chen_Research"
 # Below codes create the .dta files for each of the excel files
 local filelist x1_69 x2_69 x3_69 y_69
 foreach i of local filelist{
 clear 
-import excel using "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project/`i'.xlsx", firstrow
+# import excel using ... the path needs to be changed into where you save the excel files
+import excel using "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\Chen_Research/`i'.xlsx", firstrow
 save "`i'.dta"
 }
 use y_69, clear
-merge 1:m year using "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\x1_69.dta"
+merge 1:m year using "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\Chen_Research\x1_69.dta"
 drop _merge
-save "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\y_x1_69.dta"
+save "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\Chen_Research\y_x1_69.dta"
 use y_x1_69, clear
-merge 1:1 year using "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\x2_69.dta"
+merge 1:1 year using "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\Chen_Research\x2_69.dta"
 drop _merge
-save "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\y_x1x2_69.dta"
+save "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\Chen_Research\y_x1x2_69.dta"
 use y_x1x2_69, clear
-merge 1:1 year using "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\x3_69.dta"
+merge 1:1 year using "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\Chen_Research\x3_69.dta"
 br
 drop _merge
 br
-save "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\y_x1x2x3_69.dta"
+save "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\Chen_Research\y_x1x2x3_69.dta"
 use y_x1x2x3_69, clear
 br
 
 # /*Combine 69 with previously set dataset*/
-append using "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\y_x1x2x3.dta"
+append using "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\Chen_Research\y_x1x2x3.dta"
 br
-save "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\y_x1x2x3_whole.dta"
+# Save the dta file to Chen_Research file
+save "C:\Users\HUNG-LING\OneDrive\桌面\Econometrics\Project\Chen_Research\y_x1x2x3_whole.dta"
 
 # Result do file
 # /*Results do file*/
